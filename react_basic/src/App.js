@@ -1,7 +1,8 @@
 import React from 'react';
+import Http from "../Http/Http";
   const App = () => {
     const design = (
-      <h1>Starting React Practices</h1>
+      <Http />
     );
     return design;
   };
