@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "animate.css/animate.min.css";
-import Hooks from "./Hooks/Hooks";
+import Paginate from "./Pagination/Paginate";
 const App = ()=>{
 
   const design = (
     <>
-      <Hooks />
+      <Paginate />
     </>
   );
   return design;
