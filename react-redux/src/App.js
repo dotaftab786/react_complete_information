@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "animate.css/animate.min.css";
-import MaterialColorTheme from "./MaterialUi/MaterialColorTheme";
+import TestGri from "./MaterialUi/GridTesting/TestGri";
 const App = ()=>{
 
   const design = (
     <>
-      <MaterialColorTheme />
+      <TestGri />
     </>
   );
   return design;
