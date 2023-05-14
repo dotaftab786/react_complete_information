@@ -4,7 +4,7 @@ import {
   Container
 } from "@mui/material";
 
-import Menus from '../Json-api/Menu';
+import Menus from '../../Json-api/Menu';
 import "./Navbar.css";
 const Navbar = ()=>{
   const Buttons = ({data})=>{
@@ -14,17 +14,16 @@ const Navbar = ()=>{
           "&:hover":{
             background:"red",
             color:"white",
-            transition:"0.5s",
-            borderRadius:"0"
-          }
-        }}>{data.label}</Button>
+            transition:"0.5s"
+            }
+          }}>{data.label}</Button>
       </>
     );
     return buttonDesign;
   }
   const design = (
     <>
-      <Stack>
+      <Stack className='bg-light'>
       <Container sx={{m:4}} className="bg-light">
         <Stack direction={{
           xs:"column",

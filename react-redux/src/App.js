@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "animate.css/animate.min.css";
-import TestGri from "./MaterialUi/GridTesting/TestGri";
+import Navbar from "./cmp/Navbar/Navbar";
 const App = ()=>{
 
   const design = (
     <>
-      <TestGri />
+      <Navbar />
     </>
   );
   return design;
