@@ -4,19 +4,22 @@ import {
   Container
 } from "@mui/material";
 
+import {
+  Link
+} from "react-router-dom";
 import Menus from '../../Json-api/Menu';
 import "./Navbar.css";
 const Navbar = ()=>{
   const Buttons = ({data})=>{
     const buttonDesign = (
       <>
-        <Button sx={{
+        <Link to={data.link} sx={{
           "&:hover":{
             background:"red",
             color:"white",
             transition:"0.5s"
             }
-          }}>{data.label}</Button>
+          }}>{data.label}</Link>
       </>
     );
     return buttonDesign;
