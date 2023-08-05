@@ -14,10 +14,34 @@ import Login from "./cmp/Login/Login";
 import NotFound from "./cmp/NotFound/NotFound";
 import "material-icons/iconfont/material-icons.css";
 
+import {
+   red,
+   deepPurple,
+   teal,
+   lime
+ } from '@mui/material/colors';
+import "@fontsource/poppins";
+import {
+  ThemeProvider,
+  createTheme
+} from "@mui/material";
+
 const App = ()=>{
+
+  const Theme = createTheme({
+    palette:{
+      primary: red,
+      warning: teal,
+      error: lime
+    },
+    typography:{
+      fontFamily: "Poppins"
+    }
+  });
 
   const design = (
     <>
+      <ThemeProvider theme={Theme}>
       <Router>
         <Routes>
           <Route path="/" element={<Signup />} />
@@ -30,6 +54,7 @@ const App = ()=>{
 
         </Routes>
       </Router>
+      </ThemeProvider>
     </>
   );
   return design;
