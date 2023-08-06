@@ -30,9 +30,9 @@ const App = ()=>{
 
   const Theme = createTheme({
     palette:{
-      primary: red,
+      primary: deepPurple,
       warning: teal,
-      error: lime
+      error: red
     },
     typography:{
       fontFamily: "Poppins"
