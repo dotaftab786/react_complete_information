@@ -8,15 +8,18 @@ import {
   FormGroup,
   Checkbox
 } from "@mui/material";
+
 import {
-  useState
+  useState,
+  useEffect
 } from "react";
 import MediaQuery from "react-responsive";
 import {
   Link
 } from "react-router-dom";
+import SweetAlert from 'react-bootstrap-sweetalert'
+import useHttp from "../Hooks/useHttp";
 const Signup = ()=>{
-
   const signupForm = {
     fullname: "",
     mobile: "",
@@ -44,7 +47,53 @@ const Signup = ()=>{
   }
   const[input,setInput] = useState(signupForm);
   const[error,setError] = useState(signupFormError);
-
+  const[checked,setChecked] = useState(false);
+  const[request,setRequest] = useState(null);
+  const[httpResponse,httpError,httpLoader] = useHttp(request);
+  useEffect(()=>{
+    if(httpResponse){
+      setSweetAlert({
+        state: true,
+        title: "Signup success",
+        icon: "success",
+        message: "Signup success, please try to login"
+      })
+    }
+    if(httpError){
+      setSweetAlert({
+        state: true,
+        title: "Login Failed!",
+        icon: "error",
+        message: "Something went wrong"
+      })
+    }
+  },[httpResponse,httpError,httpLoader])
+  const[sweetAlert,setSweetAlert]=useState({
+    state:false,
+    title:"",
+    message:"",
+    icon:""
+  });
+  const Alert = ()=>{
+    const design = (
+      <>
+        <SweetAlert
+          show={sweetAlert.state}
+          title={sweetAlert.title}
+          type={sweetAlert.icon}
+          customButtons={
+            <>
+              <Button variant="contained" color="warning" sx={{mr:2}} onClick={()=>setSweetAlert({state:false})}>Cancel</Button>
+              <Button variant="contained" color="primary" component={Link} to="admin-panel">Login</Button>
+            </>
+          }
+        >
+        {sweetAlert.message}
+        </SweetAlert>
+      </>
+    );
+    return design;
+  }
   const updateValue = (e)=>{
     const input = e.target;
     const key = input.name;
@@ -80,7 +129,7 @@ const Signup = ()=>{
         ...oldData,
         [key]:(isRequired.state && isRequired) ||
         (isMinLength.state && isMinLength) ||
-        (isMaxLength)
+        isMaxLength
 
       }
     })
@@ -95,7 +144,7 @@ const Signup = ()=>{
       return {
         ...oldData,
         [key]:(isRequired.state && isRequired) ||
-          (isEmailValid)
+          isEmailValid
       }
     })
   }
@@ -106,14 +155,14 @@ const Signup = ()=>{
     const isRequired = required(input);
     const isMinLength = minLength(input,8);
     const isMaxLength = maxLength(input,16);
-    const isPasswordValid = passwordSyntax(input);
+    const isPasswordValid = strongPassword(input);
     return setError((oldData)=>{
       return {
         ...oldData,
         [key]:(isRequired.state && isRequired) ||
           (isMinLength.state && isMinLength) ||
           (isMaxLength.state && isMaxLength) ||
-          (isPasswordValid)
+          isPasswordValid
       }
     })
   }
@@ -179,7 +228,7 @@ const Signup = ()=>{
     }
   }
 
-  const passwordSyntax = (input)=>{
+  const strongPassword = (input)=>{
     const value = input.value.trim();
     const regex = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=)/g;
     if(regex.test(value)){
@@ -194,6 +243,38 @@ const Signup = ()=>{
       }
     }
 }
+
+  const register = (e)=>{
+    e.preventDefault();
+    const isValid = validateOnSubmit();
+    if(isValid){
+      setRequest({
+        method: "GET",
+        url: "https://jsonplaceholder.typicode.com/todos/1"
+      })
+    }
+  }
+
+
+  const validateOnSubmit = ()=>{
+    let valid = true;
+    for(let key in input){
+      if(input[key].length === 0){
+        valid = false;
+        setError((oldData)=>{
+          return {
+            ...oldData,
+            [key]:{
+              state: true,
+              message: "This Field is required"
+            }
+          }
+        })
+      }
+    }
+    return valid;
+  }
+
   const design = (
     <>
     <Grid container>
@@ -209,7 +290,7 @@ const Signup = ()=>{
       <Typography variant="h2" sx={{mb:5}}>
         Register
       </Typography>
-      <form>
+      <form onSubmit={register}>
         <Stack direction="column" spacing={3}>
           <TextField
               error={error.fullname.state}
@@ -262,16 +343,29 @@ const Signup = ()=>{
             <FormGroup>
               <FormControlLabel
                 label="I accept terms and conditions"
-                control={<Checkbox />}
+                control={<Checkbox checked={checked} onChange={()=>setChecked(!checked)} />}
                 />
             </FormGroup>
             <Button component={Link} to="login">ALREADY HAVE AN ACCOUNT ?</Button>
           </Stack>
           <div>
-          <Button type="submit" variant="contained">Sign up</Button>
+          <Button
+            disabled={
+              error.fullname.state ||
+              error.mobile.state ||
+              error.email.state ||
+              error.password.state ||
+              !checked
+            }
+            type="submit"
+            variant="contained"
+          >
+          SIGNUP
+          </Button>
           </div>
         </Stack>
       </form>
+      <Alert />
       </Grid>
     </Grid>
 
