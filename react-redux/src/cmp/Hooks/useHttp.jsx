@@ -4,6 +4,8 @@ import {
 } from "react";
 
 import axios from "axios";
+
+axios.defaults.baseURL= "http://localhost:3434";
 const useHttp = (request)=>{
   const[httpResponse,setHttpResponse] = useState(null);
   const[httpError,setHttpError] = useState(null);
@@ -15,7 +17,7 @@ const useHttp = (request)=>{
       setHttpResponse(response.data)
     })
     .catch((err)=>{
-      setHttpError(err)
+      setHttpError(err.response)
     }).finally(()=>{
       setHttpLoader(false)
     });

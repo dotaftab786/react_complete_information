@@ -10,6 +10,13 @@ import {
 } from "@mui/material";
 
 import {
+  useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  LoadingButton
+} from "@mui/lab";
+import {
   useState,
   useEffect
 } from "react";
@@ -19,12 +26,21 @@ import {
 } from "react-router-dom";
 import SweetAlert from 'react-bootstrap-sweetalert'
 import useHttp from "../Hooks/useHttp";
+import {
+  signupRequest
+} from "./Signup.action";
+
+import Cookies from "universal-cookie";
+
 const Signup = ()=>{
+  const cookie = new Cookies();
+  const dispatch = useDispatch();
+  const response = useSelector(response=>response);
   const signupForm = {
-    fullname: "",
-    mobile: "",
-    email: "",
-    password: ""
+    fullname: "aftab",
+    mobile: "999999999",
+    email: "a@gmail.com",
+    password: "Hello@2367"
   }
 
   const signupFormError = {
@@ -48,32 +64,34 @@ const Signup = ()=>{
   const[input,setInput] = useState(signupForm);
   const[error,setError] = useState(signupFormError);
   const[checked,setChecked] = useState(false);
-  const[request,setRequest] = useState(null);
-  const[httpResponse,httpError,httpLoader] = useHttp(request);
-  useEffect(()=>{
-    if(httpResponse){
-      setSweetAlert({
-        state: true,
-        title: "Signup success",
-        icon: "success",
-        message: "Signup success, please try to login"
-      })
-    }
-    if(httpError){
-      setSweetAlert({
-        state: true,
-        title: "Login Failed!",
-        icon: "error",
-        message: "Something went wrong"
-      })
-    }
-  },[httpResponse,httpError,httpLoader])
+
   const[sweetAlert,setSweetAlert]=useState({
     state:false,
     title:"",
     message:"",
-    icon:""
+    icon:"default"
   });
+
+  useEffect(()=>{
+    if(response && response.error){
+      setSweetAlert({
+        state:true,
+        title:"Signup Failed",
+        message:response.error.message,
+        icon:"error"
+      })
+    }
+
+    if(response && response.data){
+      cookie.set("authToken",response.data.token);
+      setSweetAlert({
+        state:true,
+        title:"Signup Success",
+        message:"Signup is completed please try to login!",
+        icon:"success"
+      })
+    }
+  },[response]);
   const Alert = ()=>{
     const design = (
       <>
@@ -83,8 +101,8 @@ const Signup = ()=>{
           type={sweetAlert.icon}
           customButtons={
             <>
-              <Button variant="contained" color="warning" sx={{mr:2}} onClick={()=>setSweetAlert({state:false})}>Cancel</Button>
-              <Button variant="contained" color="primary" component={Link} to="admin-panel">Login</Button>
+              <Button variant="outlined" color="warning" sx={{mr:2}} onClick={()=>setSweetAlert({state:false})}>Cancel</Button>
+              <Button variant="outlined" color="primary" component={Link} to="admin-panel">Login</Button>
             </>
           }
         >
@@ -248,13 +266,9 @@ const Signup = ()=>{
     e.preventDefault();
     const isValid = validateOnSubmit();
     if(isValid){
-      setRequest({
-        method: "GET",
-        url: "https://jsonplaceholder.typicode.com/todos/1"
-      })
+      dispatch(signupRequest(input));
     }
   }
-
 
   const validateOnSubmit = ()=>{
     let valid = true;
@@ -313,7 +327,7 @@ const Signup = ()=>{
               variant="outlined"
               onChange={updateValue}
               onBlur={mobileValidation}
-              onBlur={mobileValidation}
+              onInput={mobileValidation}
           />
           <TextField
               error={error.email.state}
@@ -349,7 +363,7 @@ const Signup = ()=>{
             <Button component={Link} to="login">ALREADY HAVE AN ACCOUNT ?</Button>
           </Stack>
           <div>
-          <Button
+          <LoadingButton loading={response && response.isLoading}
             disabled={
               error.fullname.state ||
               error.mobile.state ||
@@ -361,7 +375,7 @@ const Signup = ()=>{
             variant="contained"
           >
           SIGNUP
-          </Button>
+          </LoadingButton>
           </div>
         </Stack>
       </form>
