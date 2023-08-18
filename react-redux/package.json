@@ -31,7 +31,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.2",
     "universal-cookie": "^4.0.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
