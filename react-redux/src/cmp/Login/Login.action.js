@@ -8,24 +8,25 @@ import {
 import axios from "axios";
 axios.defaults.baseURL="http://localhost:3434";
 
-const loginRequest = ({formData})=>{
+const loginRequest = (formData)=>{
   return async (dispatch)=>{
     try {
       dispatch({
-        type: LOGIN_REQUEST
+        type: LOGIN_REQUEST,
+        data: []
       })
       const response = await axios({
         method: "post",
         url: "/login",
         data: formData
       })
+      console.log(response);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: response.data
       })
     } catch (err) {
-      console.log(err.response)
-      if(err.response.status === 401){
+      if(err.response.status === 404){
         dispatch({
           type: USER_NOT_FOUND
         })

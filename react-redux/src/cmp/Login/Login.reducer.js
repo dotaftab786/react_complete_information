@@ -3,50 +3,52 @@ import {
   LOGIN_SUCCESS,
   INCORRECT_PASSWORD,
   USER_NOT_FOUND
-} from ".Login/state";
+} from "./Login.state";
 
 const Model = {
-  data:null,
+  data:[],
   isLoading:false,
   userNotFound: false,
-  incorrectPassword: false
+  incorrectPassword: false,
+  isLogged: false
 }
 
-const LoginReducer = (state,action)=>{
+const LoginReducer = (state=Model,action)=>{
   switch(action.type) {
     case LOGIN_REQUEST : return {
       ...state,
-      data: null,
+      data: [],
       isLoading: true,
       userNotFound: false,
-      incorrectPassword: false
+      incorrectPassword: false,
+      isLogged: false
     }
     case LOGIN_SUCCESS : return {
       ...state,
       data: action.payload,
       isLoading: false,
       userNotFound: false,
-      incorrectPassword: false
+      incorrectPassword: false,
+      isLogged: true
     }
     case USER_NOT_FOUND : return {
       ...state,
-      data: null,
+      data: [],
       isLoading: false,
       userNotFound: true,
-      incorrectPassword: false
+      incorrectPassword: false,
+      isLogged: false
     }
     case INCORRECT_PASSWORD : return {
       ...state,
-      data: null,
+      data: [],
       isLoading: false,
       userNotFound: false,
-      incorrectPassword: true
+      incorrectPassword: true,
+      isLogged: false
     }
-
-    case default : return state;
+    default : return state;
   }
 }
 
-export {
-  LoginReducer
-}
+export default LoginReducer;

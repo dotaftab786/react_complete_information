@@ -6,11 +6,17 @@ import {
   Stack,
   FormGroup,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  IconButton,
+  InputAdornment
 } from "@mui/material";
 import * as yup from "yup";
 import {
-  Link
+  Link,
+  useNavigate
 } from "react-router-dom";
 
 import {
@@ -19,19 +25,23 @@ import {
 } from "react-redux";
 
 import {
-  useState
+  useState,
+  useEffect
 } from "react";
+
+import Cookies from "universal-cookie";
 
 import {
   loginRequest
 } from "./Login.action";
 
 const Login = ()=>{
-
+  const cookie = new Cookies();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const response = useSelector(response=>response);
-  console.log(response);
+  const {LoginReducer} = useSelector(response=>response);
   const[disabled,setDisabled] = useState(true);
+  const[checked,setChecked] = useState(false);
   const[input,setInput] = useState({
     username:"",
     password:""
@@ -47,9 +57,64 @@ const Login = ()=>{
       message:""
     }
   })
+  const checkForLogin = ()=>{
+    if(LoginReducer.userNotFound){
+      return setError((oldData)=>{
+        return {
+          ...oldData,
+          username:{
+            state:true,
+            message:"User does Not exist"
+          },
+          password:{
+            state:false,
+            message:""
+          }
+        }
+      })
+    }
+
+    if(LoginReducer.incorrectPassword){
+      return setError((oldData)=>{
+        return {
+          ...oldData,
+          username:{
+            state:false,
+            message:""
+          },
+          password:{
+            state:true,
+            message:"Incorrect password!"
+          }
+        }
+      })
+    }
+
+    if(LoginReducer.isLogged){
+      cookie.set("authToken",LoginReducer.data.token,{maxAge:86400})
+      return navigate("/admin-panel");
+    }
+  }
+
+  const rememberMe = ()=>{
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(user){
+      return(
+        setInput(user),
+        setChecked(true),
+        setDisabled(false)
+      )
+    }
+    console.log(user);
+  }
+  useEffect(()=>{
+    checkForLogin();
+    rememberMe();
+  },[LoginReducer]);
+
   const schema = yup.object().shape({
     username:yup.string().required().email(),
-    password:yup.string().required().min(8).max(15)
+    password:yup.string().required()
   });
 
   const handleInput = (e)=>{
@@ -97,6 +162,9 @@ const Login = ()=>{
 
   const login = (e)=>{
     e.preventDefault();
+    if(checked){
+    localStorage.setItem("user",JSON.stringify(input));
+    }
     dispatch(loginRequest(input))
   }
 
@@ -120,23 +188,27 @@ const Login = ()=>{
               onKeyDown={validateSubmit}
               onInput={validateInput}
              />
-            <TextField
+             <FormControl variant="outlined">
+             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+             <OutlinedInput
               error={error.password.state}
               helperText={error.password.message}
               label="Password"
               variant="outlined"
               name="password"
+              type="password"
               value={input.password}
               onChange={handleInput}
               onKeyDown={validateSubmit}
               onInput={validateInput}
-            />
+              />
+              </FormControl>
             <Stack direction='row' justifyContent="end">
-            <a href="#">Forgot password ?</a>
+            <Button variant="contained" color="primary" component={Link} to="/forgot-password">Forgot password</Button>
             </Stack>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
             <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="Remember Me" />
+              <FormControlLabel control={<Checkbox onChange={()=>setChecked(!checked)} checked={checked}/>} label="Remember Me" />
             </FormGroup>
             <Button disabled={disabled} type="submit" variant="contained" color="secondary">Login</Button>
             </Stack>

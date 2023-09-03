@@ -15,7 +15,8 @@ const SignupReducer = (state=Model,action)=>{
     case SIGNUP_REQUEST : return {
       ...state,
       isLoading: true,
-      data: null
+      data: null,
+      error: null
     }
     case SIGNUP_SUCCESS : return {
       ...state,

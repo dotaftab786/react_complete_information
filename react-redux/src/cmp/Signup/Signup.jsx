@@ -35,12 +35,12 @@ import Cookies from "universal-cookie";
 const Signup = ()=>{
   const cookie = new Cookies();
   const dispatch = useDispatch();
-  const response = useSelector(response=>response);
+  const {SignupReducer} = useSelector(response=>response);
   const signupForm = {
-    fullname: "aftab",
-    mobile: "999999999",
-    email: "a@gmail.com",
-    password: "Hello@2367"
+    fullname: "",
+    mobile: "",
+    email: "",
+    password: ""
   }
 
   const signupFormError = {
@@ -71,19 +71,18 @@ const Signup = ()=>{
     message:"",
     icon:"default"
   });
-
-  useEffect(()=>{
-    if(response && response.error){
+  const checkForSignup = ()=>{
+    if(SignupReducer.error){
       setSweetAlert({
         state:true,
         title:"Signup Failed",
-        message:response.error.message,
+        message:SignupReducer.error.message,
         icon:"error"
       })
     }
 
-    if(response && response.data){
-      cookie.set("authToken",response.data.token);
+    if(SignupReducer.data){
+      cookie.set("authToken",SignupReducer.data.token,{maxAge:86400});
       setSweetAlert({
         state:true,
         title:"Signup Success",
@@ -91,7 +90,8 @@ const Signup = ()=>{
         icon:"success"
       })
     }
-  },[response]);
+  }
+  useEffect(checkForSignup,[SignupReducer]);
   const Alert = ()=>{
     const design = (
       <>
@@ -102,7 +102,7 @@ const Signup = ()=>{
           customButtons={
             <>
               <Button variant="outlined" color="warning" sx={{mr:2}} onClick={()=>setSweetAlert({state:false})}>Cancel</Button>
-              <Button variant="outlined" color="primary" component={Link} to="admin-panel">Login</Button>
+              <Button variant="outlined" color="primary" component={Link} to="/admin-panel">Login</Button>
             </>
           }
         >
@@ -363,7 +363,7 @@ const Signup = ()=>{
             <Button component={Link} to="login">ALREADY HAVE AN ACCOUNT ?</Button>
           </Stack>
           <div>
-          <LoadingButton loading={response && response.isLoading}
+          <LoadingButton loading={SignupReducer.isLoading}
             disabled={
               error.fullname.state ||
               error.mobile.state ||

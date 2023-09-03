@@ -17,6 +17,7 @@ import Admin from "./cmp/Admin/Admin";
 import Dashboard from "./cmp/Admin/Dashboard/Dashboard";
 import AuthGuard from "./cmp/guard/AuthGuard";
 import Login from "./cmp/Login/Login";
+import Forgot from "./cmp/Forgot/Forgot";
 import NotFound from "./cmp/NotFound/NotFound";
 import "material-icons/iconfont/material-icons.css";
 import {
@@ -51,6 +52,7 @@ const App = ()=>{
       <Router>
         <Routes>
           <Route path="/" element={<Signup />} />
+          <Route path="forgot-password" element={<Forgot />} />
           <Route path="login" element={<Login />} />
           <Route element={<AuthGuard />}>
           <Route path="admin-panel" element={<Admin />}>
