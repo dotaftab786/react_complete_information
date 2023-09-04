@@ -20,6 +20,9 @@ import {
 } from "react-router-dom";
 
 import {
+  LoadingButton
+} from "@mui/lab";
+import {
   useDispatch,
   useSelector
 } from "react-redux";
@@ -210,7 +213,7 @@ const Login = ()=>{
             <FormGroup>
               <FormControlLabel control={<Checkbox onChange={()=>setChecked(!checked)} checked={checked}/>} label="Remember Me" />
             </FormGroup>
-            <Button disabled={disabled} type="submit" variant="contained" color="secondary">Login</Button>
+            <LoadingButton loading={LoginReducer.isLoading} disabled={disabled} type="submit" variant="contained" color="secondary">Login</LoadingButton>
             </Stack>
             </Stack>
             <Link to='/'> Create an Account</Link>

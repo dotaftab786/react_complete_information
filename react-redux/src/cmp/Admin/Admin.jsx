@@ -20,20 +20,49 @@ import {
 } from "@mui/material";
 
 import { deepOrange } from '@mui/material/colors';
+import {
+  useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  logoutRequest
+} from "../Login/Login.action";
 import MediaQuery from "react-responsive";
 import {
-   useState
+   useState,
+   useEffect
  } from 'react';
  import {
    Link,
    Outlet,
    useResolvedPath,
    useMatch,
-   useLocation
+   useLocation,
+   useNavigate
  } from 'react-router-dom'
  import AdminMenu from "../../Json-api/AdminMenus";
 
 const Admin = ()=>{
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {LoginReducer} = useSelector(response=>response);
+  const checkForLogout = ()=>{
+    if(!LoginReducer.isLogged){
+      return navigate("/login");
+    }
+  }
+  useEffect(checkForLogout,[LoginReducer]);
+  const[user,setUser] = useState(null);
+
+  const showUserInfo = ()=>{
+    if(!user){
+      const userInfo = JSON.parse(sessionStorage.getItem("user"));
+      console.log(userInfo.name)
+      return setUser(userInfo)
+    }
+  }
+
+  useEffect(showUserInfo,[user])
 
   const[active,setActive] = useState(true)
   const[activeOnMobile,setActiveOnMobile] = useState(false);
@@ -276,10 +305,10 @@ const Admin = ()=>{
                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
               <MenuItem>
-                <Avatar /> Profile
+                <Avatar /> {user && user.name}
               </MenuItem>
               <MenuItem>
-                <Avatar /> Add account
+                <span className="material-icons-outlined" style={{marginRight:"8px"}}>email</span>{user && user.email}
               </MenuItem>
               <Divider />
 
@@ -296,7 +325,7 @@ const Admin = ()=>{
                 </ListItemIcon>
               </MenuItem>
               <MenuItem>
-                <ListItemIcon>
+                <ListItemIcon onClick={()=>dispatch(logoutRequest())}>
                 <span className="material-icons-outlined">logout</span>
                  Logout
                 </ListItemIcon>

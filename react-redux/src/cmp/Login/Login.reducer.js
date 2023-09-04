@@ -2,7 +2,9 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   INCORRECT_PASSWORD,
-  USER_NOT_FOUND
+  USER_NOT_FOUND,
+  LOGOUT_FAILED,
+  LOGOUT_SUCCESS
 } from "./Login.state";
 
 const Model = {
@@ -26,6 +28,23 @@ const LoginReducer = (state=Model,action)=>{
     case LOGIN_SUCCESS : return {
       ...state,
       data: action.payload,
+      isLoading: false,
+      userNotFound: false,
+      incorrectPassword: false,
+      isLogged: true
+    }
+
+    case LOGOUT_SUCCESS : return {
+      ...state,
+      data: [],
+      isLoading: false,
+      userNotFound: false,
+      incorrectPassword: false,
+      isLogged: false
+    }
+
+    case LOGOUT_FAILED : return {
+      ...state,
       isLoading: false,
       userNotFound: false,
       incorrectPassword: false,

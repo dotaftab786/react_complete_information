@@ -101,8 +101,10 @@ const Signup = ()=>{
           type={sweetAlert.icon}
           customButtons={
             <>
-              <Button variant="outlined" color="warning" sx={{mr:2}} onClick={()=>setSweetAlert({state:false})}>Cancel</Button>
-              <Button variant="outlined" color="primary" component={Link} to="/admin-panel">Login</Button>
+            <Button variant="outlined" color="warning" sx={{mr:2}} onClick={()=>setSweetAlert({state:false})}>Cancel</Button>
+            {
+             SignupReducer.data ? <Button variant="outlined" color="primary" component={Link} to="/admin-panel">Login</Button> : null
+            }
             </>
           }
         >
