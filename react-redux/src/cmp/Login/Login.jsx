@@ -108,7 +108,6 @@ const Login = ()=>{
         setDisabled(false)
       )
     }
-    console.log(user);
   }
   useEffect(()=>{
     checkForLogin();

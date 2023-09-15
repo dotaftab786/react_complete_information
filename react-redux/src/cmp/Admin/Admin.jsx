@@ -47,7 +47,7 @@ const Admin = ()=>{
   const dispatch = useDispatch();
   const {LoginReducer} = useSelector(response=>response);
   const checkForLogout = ()=>{
-    if(!LoginReducer.isLogged){
+    if(LoginReducer.isLogout){
       return navigate("/login");
     }
   }

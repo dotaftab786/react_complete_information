@@ -12,7 +12,8 @@ const Model = {
   isLoading:false,
   userNotFound: false,
   incorrectPassword: false,
-  isLogged: false
+  isLogged: false,
+  isLogout: false
 }
 
 const LoginReducer = (state=Model,action)=>{
@@ -23,7 +24,8 @@ const LoginReducer = (state=Model,action)=>{
       isLoading: true,
       userNotFound: false,
       incorrectPassword: false,
-      isLogged: false
+      isLogged: false,
+      isLogout: false
     }
     case LOGIN_SUCCESS : return {
       ...state,
@@ -31,7 +33,8 @@ const LoginReducer = (state=Model,action)=>{
       isLoading: false,
       userNotFound: false,
       incorrectPassword: false,
-      isLogged: true
+      isLogged: true,
+      isLogout: false
     }
 
     case LOGOUT_SUCCESS : return {
@@ -40,7 +43,8 @@ const LoginReducer = (state=Model,action)=>{
       isLoading: false,
       userNotFound: false,
       incorrectPassword: false,
-      isLogged: false
+      isLogged: false,
+      isLogout: true
     }
 
     case LOGOUT_FAILED : return {
@@ -48,7 +52,8 @@ const LoginReducer = (state=Model,action)=>{
       isLoading: false,
       userNotFound: false,
       incorrectPassword: false,
-      isLogged: true
+      isLogged: true,
+      isLogout: false
     }
     case USER_NOT_FOUND : return {
       ...state,
@@ -56,7 +61,8 @@ const LoginReducer = (state=Model,action)=>{
       isLoading: false,
       userNotFound: true,
       incorrectPassword: false,
-      isLogged: false
+      isLogged: false,
+      isLogout: false
     }
     case INCORRECT_PASSWORD : return {
       ...state,
@@ -64,7 +70,8 @@ const LoginReducer = (state=Model,action)=>{
       isLoading: false,
       userNotFound: false,
       incorrectPassword: true,
-      isLogged: false
+      isLogged: false,
+      isLogout: false
     }
     default : return state;
   }
