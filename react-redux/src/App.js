@@ -14,7 +14,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "animate.css/animate.min.css";
 import Signup from "./cmp/Signup/Signup";
 import Admin from "./cmp/Admin/Admin";
-import Dashboard from "./cmp/Admin/Dashboard/Dashboard";
+import Modern from "./cmp/Admin/Dashboard/Modern/Modern";
 import AuthGuard from "./cmp/guard/AuthGuard";
 import Login from "./cmp/Login/Login";
 import Forgot from "./cmp/Forgot/Forgot";
@@ -56,7 +56,7 @@ const App = ()=>{
           <Route path="login" element={<Login />} />
           <Route element={<AuthGuard />}>
           <Route path="admin-panel" element={<Admin />}>
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="dashboard/modern" element={<Modern />} />
             <Route path="*" element={<NotFound />} />
           </Route>
           </Route>

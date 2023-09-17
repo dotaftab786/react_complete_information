@@ -62,7 +62,14 @@ const Admin = ()=>{
     }
   }
 
-  useEffect(showUserInfo,[user])
+  const activeRoute = ()=>{
+    return navigate("/admin-panel/dashboard/modern");
+  }
+
+  useEffect(()=>{
+    showUserInfo();
+    activeRoute();
+  },[user])
 
   const[active,setActive] = useState(true)
   const[activeOnMobile,setActiveOnMobile] = useState(false);
