@@ -5,6 +5,10 @@ import {
 import Congratulation from "./Congratulation/Congratulation";
 import Purchase from "./Purchase/Purchase";
 import TotalEarning from "./TotalEarning/TotalEarning";
+<<<<<<< Updated upstream
+=======
+import Revenue from "./RevenueUpdates/Revenue";
+>>>>>>> Stashed changes
 const Modern = ()=>{
   const design = (
     <>
@@ -12,6 +16,10 @@ const Modern = ()=>{
         <Congratulation />
         <Purchase />
         <TotalEarning />
+<<<<<<< Updated upstream
+=======
+        <Revenue />
+>>>>>>> Stashed changes
       </Grid>
     </>
   )

@@ -19,6 +19,7 @@ import AuthGuard from "./cmp/guard/AuthGuard";
 import Login from "./cmp/Login/Login";
 import Forgot from "./cmp/Forgot/Forgot";
 import NotFound from "./cmp/NotFound/NotFound";
+import Calendar from "./cmp/Admin/Calendar/Calendar";
 import "material-icons/iconfont/material-icons.css";
 import {
    red,
@@ -57,6 +58,10 @@ const App = ()=>{
           <Route element={<AuthGuard />}>
           <Route path="admin-panel" element={<Admin />}>
             <Route path="dashboard/modern" element={<Modern />} />
+<<<<<<< Updated upstream
+=======
+            <Route path="calendar" element={<Calendar />} />
+>>>>>>> Stashed changes
             <Route path="*" element={<NotFound />} />
           </Route>
           </Route>
